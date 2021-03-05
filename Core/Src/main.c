@@ -22,7 +22,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "my.h"
+#include <math.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -56,7 +57,10 @@ static void MX_TIM1_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+const int16_t sine_ampl=(1U<<(sizeof(sine_ampl)*8-1))-1;
+const uint16_t arr_size=1024;
+int16_t f_dots[1024];
+Tone_pin* tone_pins; /// It is the array of pins that make tones. The first pin is A10 and the second is A9
 /* USER CODE END 0 */
 
 /**
@@ -92,16 +96,33 @@ int main(void)
   HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
   HAL_Delay(100);
   HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
-  HAL_Delay(100);
+  HAL_Delay(200);
   HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
-  /* USER CODE END 2 */
+
+    for(int i=0; i< arr_size; ++i)
+    {
+        f_dots[i]=sine_ampl/2.0 - sine_ampl/2.0 * sin(i* 2*M_PI/arr_size);
+    }
+
+    /// This lines is ctor for tone_pins
+    Tone_pin tone_pins_init[2]={{&(htim1.Instance->CCR3), f_dots, arr_size, sine_ampl, (arr_size*500<<8)/TONE_FREQ,0}, {&(htim1.Instance->CCR2),NULL, 0, 0, 0, 0}};
+    tone_pins=tone_pins_init;
+
+    HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_3);///start sound
+    HAL_TIM_Base_Start_IT(&htim1);
+
+  uint16_t notes_1[]={NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4};
+  uint16_t notes_2[]={NOTE_B3, NOTE_B3, NOTE_B3, NOTE_G3, NOTE_D4, NOTE_B3, NOTE_G3, NOTE_D4, NOTE_B3, NOTE_FS4, NOTE_FS4, NOTE_FS4,
+                      NOTE_G4, NOTE_D4, NOTE_AS3, NOTE_G3, NOTE_D4, NOTE_B3};
+  uint8_t durations_1[]={4, 8, 8, 4, 4, 4, 4, 4};
+  uint8_t durations_2[]={4, 4, 4, 4, 16, 4, 4, 16, 4,2, 2, 2, 2,  4, 2,   2,   4, 2};
+    /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-      HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_10);
-      HAL_Delay(1000);
+      HAL_Delay(10);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
