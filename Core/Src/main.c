@@ -24,6 +24,7 @@
 /* USER CODE BEGIN Includes */
 #include "my.h"
 #include <math.h>
+#include <stdbool.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -61,6 +62,7 @@ const int16_t sine_ampl=(1U<<(sizeof(sine_ampl)*8-1))-1;
 const uint16_t arr_size=1024;
 int16_t f_dots[1024];
 Tone_pin* tone_pins; /// It is the array of pins that make tones. The first pin is A10 and the second is A9
+bool button=true;
 /* USER CODE END 0 */
 
 /**
@@ -123,7 +125,14 @@ int main(void)
   while (1)
   {
       (void) durations_1;
-      play(&tone_pins_init[0], notes_1, durations_1, sizeof(durations_1)/sizeof(durations_1[0]));
+      if(button)
+        play(&tone_pins_init[0], notes_1, durations_1, sizeof(durations_1)/sizeof(durations_1[0]));
+      if(HAL_GPIO_ReadPin(Button_GPIO_Port, Button_Pin)==GPIO_PIN_RESET)///Pull-up B11
+       {
+          HAL_Delay(250);
+          if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_11)==GPIO_PIN_RESET)
+            button=!button;
+       }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -271,6 +280,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : Button_Pin */
+  GPIO_InitStruct.Pin = Button_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(Button_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PB12 */
   GPIO_InitStruct.Pin = GPIO_PIN_12;
