@@ -123,6 +123,7 @@ int main(void)
   while (1)
   {
       (void) durations_1;
+      play(&tone_pins_init[0], notes_1, durations_1, sizeof(durations_1)/sizeof(durations_1[0]));
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
