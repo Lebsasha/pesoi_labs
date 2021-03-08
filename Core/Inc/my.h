@@ -92,6 +92,7 @@
 #define NOTE_DS8 4978
 
 #define TONE_FREQ 40000
+/// 72e6/40000=1800
 #define COUNTER_PERIOD 1800
 
 typedef struct Tone_pin
