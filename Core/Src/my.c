@@ -25,4 +25,5 @@ void play(Tone_pin* pin, const uint16_t* notes, const uint8_t* durations, int n)
         }
         start_tick+=wait;
     }
+    pin->dx=0;
 }
