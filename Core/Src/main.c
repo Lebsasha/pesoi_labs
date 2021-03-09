@@ -127,11 +127,13 @@ int main(void)
       (void) durations_1;
       if(button)
         play(&tone_pins_init[0], notes_1, durations_1, sizeof(durations_1)/sizeof(durations_1[0]));
-      if(HAL_GPIO_ReadPin(Button_GPIO_Port, Button_Pin)==GPIO_PIN_RESET)///Pull-up B11
+      else
+          HAL_Delay(1000);
+      if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_11)==GPIO_PIN_RESET)///Pull-up B11
        {
-          HAL_Delay(250);
+          HAL_Delay(150);
           if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_11)==GPIO_PIN_RESET)
-            button=!button;
+            button = !button;
        }
     /* USER CODE END WHILE */
 
