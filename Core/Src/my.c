@@ -1,6 +1,19 @@
 #include <main.h>
 #include <my.h>
 
+extern volatile bool locked;
+
+void process_cmd(const uint8_t* command, const uint32_t* len)
+{
+    if (*len)//TODO Add elses
+    {
+        if (command[0] == '0')
+            locked=false;
+        if (command[0] == '1')
+            locked=true;
+    }
+}
+
 void make_tone(Tone_pin* tone_pin)
 {
     *tone_pin->duty_cycle = (uint32_t)(tone_pin->f_dots[tone_pin->curr>>8])*COUNTER_PERIOD/tone_pin->sine_ampl;

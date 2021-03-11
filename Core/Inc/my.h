@@ -112,4 +112,6 @@ void make_tone(Tone_pin* tone_pin);
 /// @param durations - array of !positive! uint8's
 void play(Tone_pin* pin, const uint16_t* notes, const uint8_t* durations, int n);
 
+void process_cmd(const uint8_t* command, const uint32_t* len);
+
 #endif //MY
