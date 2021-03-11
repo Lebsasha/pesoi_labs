@@ -29,7 +29,7 @@ set(CMAKE_C_STANDARD 11)
 add_compile_options(-mcpu=cortex-m3 -mthumb -mthumb-interwork)
 add_compile_options(-ffunction-sections -fdata-sections -fno-common -fmessage-length=0)
 
-# uncomment to mitigate c++17 absolute addresses warnings
+# uncomment to mitigate c++17 absolute addresses warnings #TODO What is this?
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-register")
 
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
@@ -55,7 +55,7 @@ file(GLOB_RECURSE SOURCES "Core/*.*" "Drivers/*.*")
 set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/STM32F103C8TX_FLASH.ld)
 
 add_link_options(-Wl,-gc-sections,--print-memory-usage,-Map=${PROJECT_BINARY_DIR}/${PROJECT_NAME}.map)
-add_link_options(-mcpu=cortex-m3 -mthumb -mthumb-interwork)
+add_link_options(-mcpu=cortex-m3 -mthumb -mthumb-interwork) #TODO What is this?
 add_link_options(-T ${LINKER_SCRIPT})
 
 add_executable(${PROJECT_NAME}.elf ${SOURCES} ${LINKER_SCRIPT})

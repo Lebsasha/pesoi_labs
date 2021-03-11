@@ -62,7 +62,7 @@ const int16_t sine_ampl=(1U<<(sizeof(sine_ampl)*8-1))-1;
 const uint16_t arr_size=1024;
 int16_t f_dots[1024];
 Tone_pin* tone_pins; /// It is the array of pins that make tones. The first pin is A10 and the second is A9
-bool button=true;
+volatile bool if_play=true;
 /* USER CODE END 0 */
 
 /**
@@ -124,8 +124,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-      (void) durations_1;
-      if(button)
+      if(if_play)///TODO Add usb for music playing
         play(&tone_pins_init[0], notes_1, durations_1, sizeof(durations_1)/sizeof(durations_1[0]));
       else
           HAL_Delay(1000);
@@ -133,7 +132,7 @@ int main(void)
        {
           HAL_Delay(150);
           if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_11)==GPIO_PIN_RESET)
-            button = !button;
+              if_play = !if_play;
        }
     /* USER CODE END WHILE */
 
