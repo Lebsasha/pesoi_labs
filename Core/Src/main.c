@@ -62,8 +62,9 @@ static void MX_TIM1_Init(void);
 const int16_t sine_ampl=(1U<<(sizeof(sine_ampl)*8-1))-1;
 const uint16_t arr_size=1024;
 int16_t f_dots[1024];
-Tone_pin* tone_pins; /// It is the array of pins that make tones. The first pin is A10 and the second is A9
-volatile bool if_play=true;
+/// It is the array of pins that make tones. The first pin is A10 and the second is A9
+Tone_pin* tone_pins;
+volatile bool playing=true;
 volatile bool locked=false;
 /* USER CODE END 0 */
 
@@ -127,7 +128,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-      if(if_play)///TODO Add usb for music playing
+      if(playing)
         play(&tone_pins_init[0], notes_1, durations_1, sizeof(durations_1)/sizeof(durations_1[0]));
       else
           HAL_Delay(1000);
@@ -135,7 +136,7 @@ int main(void)
        {
           HAL_Delay(150);
           if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5)==GPIO_PIN_RESET && !locked)
-              if_play = !if_play;
+              playing = !playing;
        }
     /* USER CODE END WHILE */
 

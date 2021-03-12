@@ -1,16 +1,23 @@
 #include <main.h>
 #include <my.h>
 
+extern volatile bool playing;
 extern volatile bool locked;
 
 void process_cmd(const uint8_t* command, const uint32_t* len)
 {
-    if (*len)//TODO Add elses
+    if (*len)
     {
         if (command[0] == '0')
-            locked=false;
+        {
+            locked = false;
+            playing=true;
+        } else
         if (command[0] == '1')
-            locked=true;
+        {
+            locked = true;
+            playing = false;
+        }
     }
 }
 
